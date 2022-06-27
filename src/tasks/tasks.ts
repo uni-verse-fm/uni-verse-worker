@@ -1,7 +1,7 @@
 import amqp from 'amqplib';
 
 export interface IFpTask {
-  perform: (msg: amqp.ConsumeMessage | null) => void;
+  perform: (msg: amqp.ConsumeMessage | null, callback: () => void) => void;
   channelName: string;
 }
 
