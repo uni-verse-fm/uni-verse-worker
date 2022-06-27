@@ -9,6 +9,8 @@ class Listener {
   uri: string;
   task: IFpTask;
 
+  available = true;
+
   constructor(uri: string, task: IFpTask) {
     this.uri = uri;
     this.task = task;
@@ -22,22 +24,20 @@ class Listener {
     const ackMsg = (msg: amqp.ConsumeMessage | null) =>
       bb
         .resolve(msg)
-        .tap((msg) => this.task.perform(msg))
+        .tap((msg) => this.task.perform(msg, () => (this.available = true)))
         .then((msg) => msg && channel.ack(msg));
 
-    let available = false;
     while (true) {
-      available = false;
+      this.available = false;
       console.log('Waiting for a file');
       channel
         .assertQueue(this.task.channelName, assertQueueOptions)
         .then(() => channel.prefetch(1))
         .then(() =>
           channel.consume(this.task.channelName, ackMsg, consumeQueueOptions),
-        )
-        .finally(() => (available = true));
+        );
 
-      while (!available) {
+      while (!this.available) {
         await this.sleep(1000);
       }
     }

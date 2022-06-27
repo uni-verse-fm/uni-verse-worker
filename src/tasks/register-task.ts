@@ -22,7 +22,7 @@ class RegisterTask implements IFpTask {
     });
   }
 
-  private createChildProcess(trackUrl: string) {
+  private createChildProcess(trackUrl: string, callBack: () => void) {
     const child = Cp.exec(`olaf store ./tracks/${trackUrl}`);
 
     if (child != null) {
@@ -39,23 +39,29 @@ class RegisterTask implements IFpTask {
         Fs.rmSync(`./tracks/${trackUrl}`);
 
         process.stdout.write(`Exited with ${code} and ${signal}`);
+        callBack();
       });
 
       child.on('error', (msg) => {
         console.error(msg);
+        callBack()
       });
 
       child.on('exit', (code, signal) => {
         Fs.rmSync(`./tracks/${trackUrl}`);
         process.stdout.write(`Exited with ${code} and ${signal}`);
+        callBack();
       });
     } else {
       console.error('Could not create child process !');
-      exit(1);
+      callBack();
     }
   }
 
-  async perform(msg: amqp.ConsumeMessage | null): Promise<void> {
+  async perform(
+    msg: amqp.ConsumeMessage | null,
+    callBack: () => void,
+  ): Promise<void> {
     // cannot operate without a payload
     if (!msg) {
       return;
@@ -74,11 +80,11 @@ class RegisterTask implements IFpTask {
         response.data.pipe(writer);
 
         console.log('Spawning process');
-        this.createChildProcess(trackUrl);
+        this.createChildProcess(trackUrl, callBack);
       })
       .catch((err) => {
         console.error(`Could not download file : ${err}`);
-      });
+      })
   }
 }
 
