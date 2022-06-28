@@ -22,3 +22,7 @@ jobs:
       - name: Build
         run: |
           docker build . # will run buildx
+        with:
+          registry: ${{ secrets.DOCKER_REGISTRY }}
+          username: ${{ secrets.DOCKER_REGISTRY_USER }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASS }}
