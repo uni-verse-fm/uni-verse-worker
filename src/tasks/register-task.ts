@@ -43,7 +43,7 @@ class RegisterTask implements IFpTask {
 
       child.on('error', (msg) => {
         console.error(msg);
-        callBack()
+        callBack();
       });
 
       child.on('exit', (code, signal) => {
@@ -83,7 +83,7 @@ class RegisterTask implements IFpTask {
       })
       .catch((err) => {
         console.error(`Could not download file : ${err}`);
-      })
+      });
   }
 }
 
