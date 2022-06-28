@@ -4,7 +4,6 @@ import Cp from 'child_process';
 import axios from 'axios';
 import amqp from 'amqplib';
 import { AxiosResponse } from 'axios';
-import { exit } from 'process';
 
 class RegisterTask implements IFpTask {
   readonly channelName = 'uni-verse-fp-in';
@@ -35,7 +34,7 @@ class RegisterTask implements IFpTask {
       console.log('resuming child process');
       process.stdin.resume();
 
-      child.stdin?.on('end', (code, signal) => {
+      child.on('end', (code, signal) => {
         Fs.rmSync(`./tracks/${trackUrl}`);
 
         process.stdout.write(`Exited with ${code} and ${signal}`);
@@ -68,7 +67,7 @@ class RegisterTask implements IFpTask {
     }
 
     // parse payload
-    const trackUrl = JSON.parse(msg.content.toString()).trackUrl;
+    const trackUrl = JSON.parse(msg.content.toString()).track_url;
 
     // prepare file write stream
     const writer = Fs.createWriteStream(`tracks/${trackUrl}`);

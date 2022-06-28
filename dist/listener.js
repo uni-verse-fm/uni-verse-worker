@@ -9,6 +9,7 @@ const assertQueueOptions = { durable: true };
 const consumeQueueOptions = { noAck: false };
 class Listener {
     constructor(uri, task) {
+        this.available = true;
         this.uri = uri;
         this.task = task;
     }
@@ -18,18 +19,16 @@ class Listener {
     async assertAndConsume(channel) {
         const ackMsg = (msg) => bluebird_1.default
             .resolve(msg)
-            .tap((msg) => this.task.perform(msg))
+            .tap((msg) => this.task.perform(msg, () => (this.available = true)))
             .then((msg) => msg && channel.ack(msg));
-        let available = false;
         while (true) {
-            available = false;
+            this.available = false;
             console.log('Waiting for a file');
             channel
                 .assertQueue(this.task.channelName, assertQueueOptions)
                 .then(() => channel.prefetch(1))
-                .then(() => channel.consume(this.task.channelName, ackMsg, consumeQueueOptions))
-                .finally(() => (available = true));
-            while (!available) {
+                .then(() => channel.consume(this.task.channelName, ackMsg, consumeQueueOptions));
+            while (!this.available) {
                 await this.sleep(1000);
             }
         }

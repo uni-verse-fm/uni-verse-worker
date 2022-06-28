@@ -8,6 +8,7 @@ const listener_1 = __importDefault(require("./listener"));
 const tasks_1 = require("./tasks/tasks");
 const process_1 = require("process");
 const register_task_1 = __importDefault(require("./tasks/register-task"));
+const search_task_1 = __importDefault(require("./tasks/search-task"));
 const rabbit_uri = `amqp://${config_1.default.rabbitMqUrl}:${config_1.default.rabbitMqPort}`;
 let task;
 switch (config_1.default.task) {
@@ -15,7 +16,7 @@ switch (config_1.default.task) {
         task = new register_task_1.default(config_1.default.minioAddress, config_1.default.minioPort);
         break;
     case tasks_1.TaskType.SEARCH:
-        task = new register_task_1.default(config_1.default.minioAddress, config_1.default.minioPort);
+        task = new search_task_1.default(config_1.default.minioAddress, config_1.default.minioPort);
         break;
     default:
         console.error(`Aborting due to unknown task type. Valid ones are: ${Object.entries(tasks_1.TaskType).map((s) => `${s.toString()}, `)}`);

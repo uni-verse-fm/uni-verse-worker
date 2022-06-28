@@ -5,6 +5,7 @@ import Listener from './listener';
 import { IFpTask, TaskType } from './tasks/tasks';
 import { exit } from 'process';
 import RegisterTask from './tasks/register-task';
+import SearchTask from './tasks/search-task';
 
 const rabbit_uri = `amqp://${config.rabbitMqUrl}:${config.rabbitMqPort}`;
 
@@ -15,7 +16,7 @@ switch (config.task) {
     task = new RegisterTask(config.minioAddress, config.minioPort);
     break;
   case TaskType.SEARCH:
-    task = new RegisterTask(config.minioAddress, config.minioPort);
+    task = new SearchTask(config.minioAddress, config.minioPort);
     break;
   default:
     console.error(
