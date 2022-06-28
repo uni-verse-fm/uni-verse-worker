@@ -4,6 +4,7 @@ import Cp from 'child_process';
 import axios from 'axios';
 import amqp from 'amqplib';
 import { AxiosResponse } from 'axios';
+import { method } from 'bluebird';
 
 class SearchTask implements IFpTask {
   readonly channelName = 'uni-verse-fp-search';
@@ -11,9 +12,16 @@ class SearchTask implements IFpTask {
     /\d, \d, [a-z0-9]+.(?:wav|mp3|ogg|flac|wave), \d+, [A-Za-z\/]+([a-z0-9]+.(?:wav|mp3|ogg|flac|wave)), [0-9]+, [\-\.0-9]+, [\-\.0-9]+, [\-\.0-9]+, [\-\.0-9]+/i;
 
   readonly minioBaseUrl: string;
+  readonly apiBaseUrl: string;
 
-  constructor(minioAddress: string, minioPort: string) {
+  constructor(
+    minioAddress: string,
+    minioPort: string,
+    apiAddresse: string,
+    apiPort: string,
+  ) {
     this.minioBaseUrl = `http://${minioAddress}:${minioPort}/extracts/`;
+    this.apiBaseUrl = `http://${apiAddresse}:${apiPort}/fp-searches/`;
   }
 
   private performRequest(extractUrl: string): Promise<AxiosResponse> {
@@ -24,19 +32,36 @@ class SearchTask implements IFpTask {
     });
   }
 
-  private parseLogsAndReport(logs: string) {
+  private performReport(foundTrackFileName: string, searchId: string) {
+    return axios({
+      url: `${this.apiBaseUrl}${searchId}`,
+      data: {
+        foundTrackFileName,
+        takenTime: 1,
+      },
+      method: 'PATCH',
+      responseType: 'json',
+    });
+  }
+
+  private parseLogsAndReport(logs: string, searchId: string) {
     console.log(`read: ${logs}`);
     if (this.matchLogRegex.test(logs)) {
       const matches = logs.match(this.matchLogRegex);
       if (matches) {
         console.log(`Found matching file: ${matches[1]}`);
+        this.performReport(matches[1], searchId);
       } else {
         console.error('Could not match regex pattern with fp result.');
       }
     }
   }
 
-  private createChildProcess(extractUrl: string, callBack: () => void) {
+  private createChildProcess(
+    searchId: string,
+    extractUrl: string,
+    callBack: () => void,
+  ) {
     const child = Cp.exec(`olaf query ./extracts/${extractUrl}`);
 
     if (child != null) {
@@ -47,7 +72,7 @@ class SearchTask implements IFpTask {
       process.stdin.resume();
 
       child.stdout?.on('data', (data: string) => {
-        this.parseLogsAndReport(data);
+        this.parseLogsAndReport(data, searchId);
       });
 
       child.on('end', (code, signal) => {
@@ -85,6 +110,8 @@ class SearchTask implements IFpTask {
 
     // parse payload
     const extractUrl = JSON.parse(msg.content.toString()).extract_url;
+    const searchId = JSON.parse(msg.content.toString()).search_id;
+
     // prepare file write stream
     const writer = Fs.createWriteStream(`extracts/${extractUrl}`);
 
@@ -95,7 +122,7 @@ class SearchTask implements IFpTask {
         response.data.pipe(writer);
 
         console.log('Spawning process');
-        this.createChildProcess(extractUrl, callBack);
+        this.createChildProcess(searchId, extractUrl, callBack);
       })
       .catch((err) => {
         console.error(`Could not download file : ${err}`);

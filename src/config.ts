@@ -5,4 +5,6 @@ export default {
   minioAddress: process.env.MINIO_ENDPOINT || 'localhost',
   minioPort: process.env.MINIO_PORT || '9000',
   task: process.env.TASK || 'register',
+  apiHost: process.env.INTERNAL_API_HOST || 'dev',
+  apiPort: process.env.INTERNAL_API_PORT || '3000',
 };
