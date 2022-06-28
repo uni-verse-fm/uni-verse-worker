@@ -16,7 +16,7 @@ switch (config_1.default.task) {
         task = new register_task_1.default(config_1.default.minioAddress, config_1.default.minioPort);
         break;
     case tasks_1.TaskType.SEARCH:
-        task = new search_task_1.default(config_1.default.minioAddress, config_1.default.minioPort);
+        task = new search_task_1.default(config_1.default.minioAddress, config_1.default.minioPort, config_1.default.apiHost, config_1.default.apiPort);
         break;
     default:
         console.error(`Aborting due to unknown task type. Valid ones are: ${Object.entries(tasks_1.TaskType).map((s) => `${s.toString()}, `)}`);

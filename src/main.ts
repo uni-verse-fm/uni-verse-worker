@@ -16,7 +16,12 @@ switch (config.task) {
     task = new RegisterTask(config.minioAddress, config.minioPort);
     break;
   case TaskType.SEARCH:
-    task = new SearchTask(config.minioAddress, config.minioPort);
+    task = new SearchTask(
+      config.minioAddress,
+      config.minioPort,
+      config.apiHost,
+      config.apiPort,
+    );
     break;
   default:
     console.error(
