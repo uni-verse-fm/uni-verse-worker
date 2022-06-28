@@ -28,7 +28,8 @@ jobs:
 
       - name: Push
         run: |
-          docker push registry.qtmsheep.com/vagahbond/uni-verse/worker:latest ${{ secrets.DOCKER_REGISTRY }}/vagahbond/uni-verse/worker:${{ steps.tag_name.outputs.TAG_NAME }}
+          docker push ${{ secrets.DOCKER_REGISTRY }}/vagahbond/uni-verse/worker:${{ steps.tag_name.outputs.TAG_NAME }}
+          docker push ${{ secrets.DOCKER_REGISTRY }}/vagahbond/uni-verse/worker:latest
 
       # - name: Build and push
       #   id: docker_build
