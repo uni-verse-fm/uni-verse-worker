@@ -29,7 +29,3 @@ jobs:
       - name: Build
         run: |
           docker build --tag registry.qtmsheep.com/vagahbond/uni-verse/worker:latest --tag registry.qtmsheep.com/vagahbond/uni-verse/worker . # will run buildx
-
-      - name: Push
-        run: |
-          docker push registry.qtmsheep.com/vagahbond/uni-verse/worker:later
