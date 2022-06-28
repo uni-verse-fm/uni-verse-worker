@@ -4,12 +4,11 @@ import Cp from 'child_process';
 import axios from 'axios';
 import amqp from 'amqplib';
 import { AxiosResponse } from 'axios';
-import { method } from 'bluebird';
 
 class SearchTask implements IFpTask {
   readonly channelName = 'uni-verse-fp-search';
   readonly matchLogRegex: RegExp =
-    /\d, \d, [a-z0-9]+.(?:wav|mp3|ogg|flac|wave), \d+, [A-Za-z\/]+([a-z0-9]+.(?:wav|mp3|ogg|flac|wave)), [0-9]+, [\-\.0-9]+, [\-\.0-9]+, [\-\.0-9]+, [\-\.0-9]+/i;
+    /\d, \d, [a-z0-9]+.(?:wav|mp3|ogg|flac|wave|m4a|aac), \d+, [A-Za-z\/]+([a-z0-9]+.(?:wav|mp3|ogg|flac|wave|m4a|aac)), [0-9]+, [\-\.0-9]+, [\-\.0-9]+, [\-\.0-9]+, [\-\.0-9]+/i;
 
   readonly minioBaseUrl: string;
   readonly apiBaseUrl: string;
