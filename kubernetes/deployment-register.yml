@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uni-verse-register-worker
+spec:
+  selector:
+    matchLabels:
+      app: uni-verse-register-worker
+  template:
+    metadata:
+      labels:
+        app: uni-verse-register-worker
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: uni-verse-register-worker
+        image: registry.qtmsheep.com/vagahbond/uni-verse/worker
+        env:
+          - name: TASK
+            value: register
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+        envFrom:
+          - configMapRef:
+              name: uni-verse-conf
+        volumeMounts:
+        - mountPath: /root/.olaf/db
+          name: uni-verse-worker-db
+
+
+      volumes:
+      - name: uni-verse-worker-db
+        persistentVolumeClaim:
+          claimName:  uni-verse-worker-db
