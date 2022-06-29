@@ -7,7 +7,7 @@ import { exit } from 'process';
 import RegisterTask from './tasks/register-task';
 import SearchTask from './tasks/search-task';
 
-const rabbit_uri = `amqp://${config.rabbitMqUrl}:${config.rabbitMqPort}`;
+const rabbit_uri = `amqp://${config.rabbitUser}:${config.rabbitPassword}@${config.rabbitMqUrl}:${config.rabbitMqPort}`;
 
 let task: IFpTask;
 
