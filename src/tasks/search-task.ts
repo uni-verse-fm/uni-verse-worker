@@ -112,7 +112,7 @@ class SearchTask implements IFpTask {
     const searchId = JSON.parse(msg.content.toString()).search_id;
 
     // Create folder if it doesnt exist to avoid errror
-    if (Fs.existsSync('extracts')) {
+    if (!Fs.existsSync('extracts')) {
       Fs.mkdirSync('extracts');
     }
 
