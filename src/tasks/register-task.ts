@@ -71,7 +71,7 @@ class RegisterTask implements IFpTask {
     const trackUrl = JSON.parse(msg.content.toString()).track_url;
 
     // Create folder if it doesnt exist to avoid errror
-    if (Fs.existsSync('tracks')) {
+    if (!Fs.existsSync('tracks')) {
       Fs.mkdirSync('tracks');
     }
 
