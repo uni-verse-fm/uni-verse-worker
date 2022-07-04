@@ -1,9 +1,10 @@
 import { IFpTask } from './tasks';
-import Fs from 'fs';
+import Fs, { fstat } from 'fs';
 import Cp from 'child_process';
 import axios from 'axios';
 import amqp from 'amqplib';
 import { AxiosResponse } from 'axios';
+import { setFlagsFromString } from 'v8';
 
 class RegisterTask implements IFpTask {
   readonly channelName = 'uni-verse-fp-in';
@@ -68,6 +69,11 @@ class RegisterTask implements IFpTask {
 
     // parse payload
     const trackUrl = JSON.parse(msg.content.toString()).track_url;
+
+    // Create folder if it doesnt exist to avoid errror
+    if (Fs.existsSync('tracks')) {
+      Fs.mkdirSync('tracks');
+    }
 
     // prepare file write stream
     const writer = Fs.createWriteStream(`tracks/${trackUrl}`);

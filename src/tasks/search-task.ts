@@ -111,6 +111,11 @@ class SearchTask implements IFpTask {
     const extractUrl = JSON.parse(msg.content.toString()).extract_url;
     const searchId = JSON.parse(msg.content.toString()).search_id;
 
+    // Create folder if it doesnt exist to avoid errror
+    if (Fs.existsSync('extracts')) {
+      Fs.mkdirSync('extracts');
+    }
+
     // prepare file write stream
     const writer = Fs.createWriteStream(`extracts/${extractUrl}`);
 
