@@ -2,12 +2,12 @@ FROM registry.qtmsheep.com/vagahbond/olaf:node as build
 
 WORKDIR /usr/src/app
 
-COPY . .
+COPY src ./src
+COPY *.json ./
+COPY *.js ./
 
+RUN npm ci
 RUN npm run build
-
-
-ENTRYPOINT [ "npm", "run", "start" ]
 
 FROM build as prod
 

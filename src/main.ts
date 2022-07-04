@@ -8,6 +8,7 @@ import RegisterTask from './tasks/register-task';
 import SearchTask from './tasks/search-task';
 
 const rabbit_uri = `amqp://${config.rabbitUser}:${config.rabbitPassword}@${config.rabbitMqUrl}:${config.rabbitMqPort}`;
+console.log(`Connecting to ${rabbit_uri}`);
 
 let task: IFpTask;
 
