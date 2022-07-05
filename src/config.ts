@@ -9,4 +9,5 @@ export default {
   task: process.env.TASK || 'register',
   apiHost: process.env.INTERNAL_API_HOST || 'dev',
   apiPort: process.env.INTERNAL_API_PORT || '3000',
+  apiKey: process.env.UNIVERSE_PRIVATE_KEY || ''
 };
