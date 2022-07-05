@@ -49,7 +49,13 @@ class SearchTask implements IFpTask {
       const matches = logs.match(this.matchLogRegex);
       if (matches) {
         console.log(`Found matching file: ${matches[1]}`);
-        this.performReport(matches[1], searchId);
+        this.performReport(matches[1], searchId)
+        .then((res) => {
+          console.log(res.data)
+        })
+        .catch(err => {
+          console.error(err)
+        });
       } else {
         console.error('Could not match regex pattern with fp result.');
       }
