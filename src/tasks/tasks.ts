@@ -8,4 +8,5 @@ export interface IFpTask {
 export enum TaskType {
   REGISTER = 'register',
   SEARCH = 'search',
+  PLAGIAT = 'plagiat'
 }
