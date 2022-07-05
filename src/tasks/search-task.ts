@@ -50,12 +50,12 @@ class SearchTask implements IFpTask {
       if (matches) {
         console.log(`Found matching file: ${matches[1]}`);
         this.performReport(matches[1], searchId)
-        .then((res) => {
-          console.log(res.data)
-        })
-        .catch(err => {
-          console.error(err)
-        });
+          .then((res) => {
+            console.log(res.data);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       } else {
         console.error('Could not match regex pattern with fp result.');
       }
