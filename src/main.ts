@@ -6,6 +6,7 @@ import { IFpTask, TaskType } from './tasks/tasks';
 import { exit } from 'process';
 import RegisterTask from './tasks/register-task';
 import SearchTask from './tasks/search-task';
+import PlagiaTask from './tasks/plagia-task';
 
 const rabbit_uri = `amqp://${config.rabbitUser}:${config.rabbitPassword}@${config.rabbitMqUrl}:${config.rabbitMqPort}`;
 console.log(`Connecting to ${rabbit_uri}`);
@@ -22,6 +23,14 @@ switch (config.task) {
       config.minioPort,
       config.apiHost,
       config.apiPort,
+    );
+  case TaskType.PLAGIAT:
+    task = new PlagiaTask(
+      config.minioAddress,
+      config.minioPort,
+      config.apiHost,
+      config.apiPort,
+      config.apiKey,
     );
     break;
   default:
