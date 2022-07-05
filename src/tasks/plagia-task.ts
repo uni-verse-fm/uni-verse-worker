@@ -39,8 +39,8 @@ class PlagiaTask implements IFpTask {
       url: `${this.apiBaseUrl}${trackId}`,
       method: 'PATCH',
       headers: {
-        "Authorization": this.apiKey
-      }
+        Authorization: this.apiKey,
+      },
     });
   }
 
@@ -51,12 +51,12 @@ class PlagiaTask implements IFpTask {
       if (matches) {
         console.log(`Found matching file: ${matches[1]}`);
         this.performReport(matches[1], trackId)
-        .then((res) => {
-          console.log(res.data)
-        })
-        .catch(err => {
-          console.error(err)
-        });
+          .then((res) => {
+            console.log(res.data);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       } else {
         console.error('Could not match regex pattern with fp result.');
       }
