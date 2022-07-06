@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: uni-verse-search-worker
+  name: uni-verse-plagiat-worker
 spec:
   selector:
     matchLabels:
-      app: uni-verse-search-worker
+      app: uni-verse-plagiat-worker
   template:
     metadata:
       labels:
-        app: uni-verse-search-worker
+        app: uni-verse-plagiat-worker
     spec:
       imagePullSecrets:
         - name: regcred
       containers:
-      - name: uni-verse-search-worker
+      - name: uni-verse-plagiat-worker
         image: registry.qtmsheep.com/vagahbond/uni-verse/worker
         env:
           - name: TASK
-            value: search
+            value: plagiat
         resources:
           limits:
             memory: "128Mi"

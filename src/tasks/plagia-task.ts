@@ -6,7 +6,7 @@ import amqp from 'amqplib';
 import { AxiosResponse } from 'axios';
 
 class PlagiaTask implements IFpTask {
-  readonly channelName = 'uni-verse-fp-plagia-in';
+  readonly channelName = 'uni-verse-plagia-in';
   readonly matchLogRegex: RegExp =
     /\d, \d, [a-z0-9]+.(?:wav|mp3|ogg|flac|wave|m4a|aac), \d+, [A-Za-z\/]+([a-z0-9]+.(?:wav|mp3|ogg|flac|wave|m4a|aac)), [0-9]+, [\-\.0-9]+, [\-\.0-9]+, [\-\.0-9]+, [\-\.0-9]+/i;
 
