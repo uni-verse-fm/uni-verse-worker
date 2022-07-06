@@ -21,7 +21,7 @@ class PlagiaTask implements IFpTask {
     apiPort: string,
     apiKey: string,
   ) {
-    this.minioBaseUrl = `http://${minioAddress}:${minioPort}/extracts/`;
+    this.minioBaseUrl = `http://${minioAddress}:${minioPort}/tracks/`;
     this.apiBaseUrl = `http://${apiAddresse}:${apiPort}/tracks/plagia/`;
     this.apiKey = apiKey;
   }
@@ -68,7 +68,7 @@ class PlagiaTask implements IFpTask {
     extractUrl: string,
     callBack: () => void,
   ) {
-    const child = Cp.exec(`olaf query ./extracts/${extractUrl}`);
+    const child = Cp.exec(`olaf query ./tracks/${extractUrl}`);
 
     if (child != null) {
       console.log('Plugin child process errors to stderr');
@@ -82,7 +82,7 @@ class PlagiaTask implements IFpTask {
       });
 
       child.on('end', (code, signal) => {
-        Fs.rmSync(`./extracts/${extractUrl}`);
+        Fs.rmSync(`./tracks/${extractUrl}`);
 
         process.stdout.write(`Exited with ${code} and ${signal}`);
         callBack();
@@ -94,7 +94,7 @@ class PlagiaTask implements IFpTask {
       });
 
       child.on('exit', (code, signal) => {
-        Fs.rmSync(`./extracts/${extractUrl}`);
+        Fs.rmSync(`./tracks/${extractUrl}`);
 
         process.stdout.write(`Exited with ${code} and ${signal}`);
         callBack();
@@ -119,12 +119,12 @@ class PlagiaTask implements IFpTask {
     const trackId = JSON.parse(msg.content.toString()).id;
 
     // Create folder if it doesnt exist to avoid errror
-    if (!Fs.existsSync('extracts')) {
-      Fs.mkdirSync('extracts');
+    if (!Fs.existsSync('tracks')) {
+      Fs.mkdirSync('tracks');
     }
 
     // prepare file write stream
-    const writer = Fs.createWriteStream(`extracts/${extractUrl}`);
+    const writer = Fs.createWriteStream(`tracks/${extractUrl}`);
 
     console.log(`Downloading:${this.minioBaseUrl}${extractUrl}`);
 
