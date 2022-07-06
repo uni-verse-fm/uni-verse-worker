@@ -127,7 +127,7 @@ class SearchTask implements IFpTask {
 
     console.log(`Downloading:${this.minioBaseUrl}${extractUrl}`);
 
-    this.performRequest(extractUrl)
+    await this.performRequest(extractUrl)
       .then((response) => {
         response.data.pipe(writer);
 
