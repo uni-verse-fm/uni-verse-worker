@@ -115,7 +115,7 @@ class PlagiaTask implements IFpTask {
     }
 
     // parse payload
-    const extractUrl = JSON.parse(msg.content.toString()).extract_url;
+    const extractUrl = JSON.parse(msg.content.toString()).track_url;
     const trackId = JSON.parse(msg.content.toString()).id;
 
     // Create folder if it doesnt exist to avoid errror
