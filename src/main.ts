@@ -24,6 +24,7 @@ switch (config.task) {
       config.apiHost,
       config.apiPort,
     );
+    break;
   case TaskType.PLAGIAT:
     task = new PlagiaTask(
       config.minioAddress,
