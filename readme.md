@@ -1,4 +1,8 @@
-# worker Uni-verse
+![GitHub Release](https://img.shields.io/github/v/release/uni-verse-fm/uni-verse-worker?sort=semver&display_name=release&style=for-the-badge&label=WORKER%3ARELEASE&cacheSeconds=3600)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/uni-verse-fm/uni-verse-worker/ci.yml?style=for-the-badge&label=WORKER%3AChecks&logo=eslint)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/uni-verse-fm/uni-verse-worker/build.yml?style=for-the-badge&label=WORKER%3ABuild&logo=nodedotjs)
+
+# Worker Uni-verse
 
 Uni-verse est une plateforme de streaming audio conçue spécifiquement pour les producteurs de musique.
 Elle consiste en un site web, une application smartphone, et une API.
